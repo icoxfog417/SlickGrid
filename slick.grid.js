@@ -918,7 +918,11 @@ if (typeof Slick === "undefined") {
     }
 
     function createCssRules() {
-      $style = $("<style type='text/css' rel='stylesheet' />").appendTo($("head"));
+      $style = $('#slickGridStyleSheet');
+      if (!$style[0]) {
+        $style = $("<style id='slickGridStyleSheet' type='text/css' rel='stylesheet' />").appendTo($("head"));
+      }
+
       var rowHeight = (options.rowHeight - cellHeightDiff);
       var rules = [
         "." + uid + " .slick-header-column { left: 1000px; }",
@@ -933,8 +937,8 @@ if (typeof Slick === "undefined") {
         rules.push("." + uid + " .r" + i + " { }");
       }
 
-      if ($style[0].styleSheet) { // IE
-        $style[0].styleSheet.cssText = rules.join(" ");
+      if ($style[0].styleSheet) { // IE add to existing sheet
+        $style[0].styleSheet.cssText += rules.join(" ");
       } else {
         $style[0].appendChild(document.createTextNode(rules.join(" ")));
       }
